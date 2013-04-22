@@ -5,7 +5,7 @@
 package practicejava;
 
 import practicejava.factory.product.number.MobileNumber;
-import practicejava.factory.product.number.MobileNumberFactory;
+import practicejava.factory.product.number.NumberFactory;
 
 /**
  *
@@ -13,7 +13,7 @@ import practicejava.factory.product.number.MobileNumberFactory;
  */
 public class PracticeFactory {
     //  sample singleton
-    private static MobileNumberFactory mobileNumberFactory = new MobileNumberFactory();
+    private static NumberFactory mobileNumberFactory = new NumberFactory();
     /**
      * @param args the command line arguments
      */
