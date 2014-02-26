@@ -2,21 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package practicejava.fibonnaci;
+package practicejava.fibonacci;
 
 /**
+ * Fibonacci implementation
  *
- * @author MSCI
+ * @author Chandra
  */
-public class Fibonnaci {
+public class Fibonacci {
     public static void print(int n){
         for(int i=0; i<n; i++){
             System.out.println(fib(i));
         }
     }
-    
-    public static int fib(int n){
-        int a=0, b=1;
+
+    /**
+     * Return n-th fibonacci value
+     *
+     * @param n n-th
+     * @return fibonacci value
+     */
+    private static int fib(int n){
         if(n==2||n==1) {
             return 1;
         } else if(n==0){
