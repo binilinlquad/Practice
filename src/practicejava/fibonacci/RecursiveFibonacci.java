@@ -5,11 +5,11 @@
 package practicejava.fibonacci;
 
 /**
- * Fibonacci implementation
+ * Recursive Fibonacci implementation
  *
  * @author Chandra
  */
-public class Fibonacci {
+public class RecursiveFibonacci {
     public static void print(int n){
         for(int i=0; i<n; i++){
             System.out.println(fib(i));

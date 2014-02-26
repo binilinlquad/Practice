@@ -10,6 +10,6 @@ package practicejava;
  */
 public class PracticeFibonnaci {
       public static void main(String[] args) {
-          practicejava.fibonnaci.Fibonnaci.print(10);
+          practicejava.fibonacci.RecursiveFibonacci.print(10);
       }
 }
