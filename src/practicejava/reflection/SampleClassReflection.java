@@ -44,4 +44,22 @@ public class SampleClassReflection {
         System.out.println("Modifier.isTransient:" + Modifier.isTransient(mod));
         System.out.println("Modifier.isVolatile:" + Modifier.isVolatile(mod));
     }
+
+    /**
+     * create new instance without arguments using newInstance
+     *
+     * @return Object
+     */
+    public Object newInstance(){
+        try {
+            return this.myClass.newInstance();
+        } catch(IllegalAccessException e1) {
+            e1.printStackTrace();;
+        } catch(InstantiationException e2) {
+            e2.printStackTrace();;
+        }
+        //  unreach code
+        return null;
+    }
+
 }
