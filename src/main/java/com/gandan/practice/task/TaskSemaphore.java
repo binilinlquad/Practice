@@ -1,12 +1,17 @@
-package com.gandan.practice;
+package com.gandan.practice.task;
 
 import com.gandan.practice.semaphore.BlockingSemaphore;
 
 
-public class PracticeSemaphore {
-    private static BlockingSemaphore blocker = new BlockingSemaphore();
+public class TaskSemaphore implements ITask {
+    private BlockingSemaphore blocker;
 
-    public static void main(String args[]) {
+    public TaskSemaphore() {
+        blocker = new BlockingSemaphore();
+    }
+
+    @Override
+    public void execute() {
         Runnable d1 = new Dummy();
         Runnable d2 = new Dummy2();
 
@@ -16,10 +21,11 @@ public class PracticeSemaphore {
         System.out.println("Blocking by Dummy");
         d1.run();
 
+        d2.run();
         System.out.println("Unblock by Dummy2");
     }
 
-    private static class Dummy implements Runnable {
+    private class Dummy implements Runnable {
         public Dummy() {
         }
 
@@ -28,7 +34,7 @@ public class PracticeSemaphore {
         }
     }
 
-    public static class Dummy2 implements Runnable {
+    public class Dummy2 implements Runnable {
         public Dummy2() {
         }
 

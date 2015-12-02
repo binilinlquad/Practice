@@ -1,9 +1,10 @@
-package com.gandan.practice;
+package com.gandan.practice.task;
 
 import com.gandan.practice.reflection.SampleClassReflection;
 
-public class PracticeReflection {
-    public static void main(String[] args){
+public class TaskReflection implements ITask {
+    @Override
+    public void execute() {
         SampleClassReflection sample = new SampleClassReflection(String.class);
         sample.displayClassnameAtRuntime();
         sample.dipslayModifier();
