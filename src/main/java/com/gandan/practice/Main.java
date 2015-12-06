@@ -9,13 +9,14 @@ public class Main {
 
     public static void main(String args[]) {
         ITask[] practices = {
-                  new TaskFactory(),
+                new TaskFactory(),
                 new TaskFibonnaci(),
                 new TaskReflection(),
                 new TaskSemaphore(),
                 new TryCatchFinally(),
                 new RxThread(),
-                new RxUsing()};
+                new RxUsing()
+        };
         for (ITask practice : practices) {
             practice.execute();
         }
