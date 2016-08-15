@@ -16,19 +16,19 @@ class RxUsing : ITask {
 
     override fun execute() {
         Observable.using<Any, Any>({
-            System.out.println("Func 0")
+            System.out.println("resource factory")
             System.out.println(">> Thread id " + Thread.currentThread().id)
             "Func 0"
         }, { s ->
-            System.out.println("Func 1")
+            System.out.println("observable factory")
             System.out.println(">> Thread id " + Thread.currentThread().id)
             Observable.just(s).observeOn(Schedulers.newThread())
         }) { s ->
-            System.out.println("Action 1")
+            System.out.println("dispose")
             System.out.println(">> Thread id " + Thread.currentThread().id)
             System.out.println(s)
         }.subscribe { str ->
-            System.out.println("String " + str)
+            System.out.println("Subscribe $str")
             System.out.println(">> Thread id " + Thread.currentThread().id)
         }
     }
