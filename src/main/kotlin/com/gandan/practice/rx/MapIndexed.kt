@@ -1,11 +1,16 @@
 package com.gandan.practice.rx
 
 import rx.Observable
+import rx.schedulers.Schedulers
 
 class MapIndexed<V> : Observable.Transformer<V, Pair<Int, V>> {
-    private var index = 0
     override fun call(t: Observable<V>): Observable<Pair<Int, V>> {
-        return t.map { index++ to it }
+        return Observable.defer {
+            var index = 0
+            t.flatMap {
+                Observable.just(index++ to it)
+            }
+        }
     }
 }
 
@@ -21,4 +26,20 @@ fun main(args: Array<String>) {
             .subscribe({
                 System.out.println(it)
             })
+
+    val observable = Observable.just("A1", "B2", "C3", "D4")
+            .compose(MapIndexed())
+    observable
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread())
+            .subscribe({
+                System.out.println(it)
+            })
+    observable
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread())
+            .subscribe({
+                System.out.println(it)
+            })
+
 }
