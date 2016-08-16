@@ -1,20 +1,17 @@
 package com.gandan.practice.trycatch
 
-import com.gandan.practice.task.ITask
+fun main(args: Array<String>) {
+    TryCatchFinally().execute()
+}
 
-/**
- * Return in try, catch, and finally.
-
- * Created by chandra on 12/3/15.
- */
-class TryCatchFinally : ITask {
-    override fun execute() {
+class TryCatchFinally {
+    fun execute() {
         print()
     }
 
     private fun print() {
         println("Return in Try-Finally result in " + returnInTryAndFinally())
-        println("Return in Catch-Finally result in " + returnInTryAndFinally())
+        println("Return in Catch-Finally result in " + returnInCatchAndFinally())
     }
 
     private fun returnInTryAndFinally(): String {

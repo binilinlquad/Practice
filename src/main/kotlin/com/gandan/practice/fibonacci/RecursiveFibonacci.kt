@@ -1,5 +1,8 @@
 package com.gandan.practice.fibonacci
 
+fun main(args: Array<String>) {
+    RecursiveFibonacci.print(10)
+}
 
 object RecursiveFibonacci {
     fun print(n: Int) {

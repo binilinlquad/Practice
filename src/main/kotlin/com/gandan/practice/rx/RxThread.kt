@@ -1,40 +1,31 @@
 package com.gandan.practice.rx
 
-import com.gandan.practice.task.ITask
 import rx.Observable
-import rx.Subscriber
+import rx.functions.Action0
 import rx.schedulers.Schedulers
-
-import java.util.ArrayList
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+fun main(args: Array<String>) {
+    RxThread().execute()
+}
 
-/**
- * Result could be different each run if using new thread
- * for subscribeOn or observeOn
- *
- *
- * Created by chandra on 12/4/15.
- */
-class RxThread : ITask {
+class RxThread {
 
-    override fun execute() {
-        val tasks = arrayOf<ITask>(PlainObservableTest(), SubscribeOnObservableTest(), SubscribeAndObserveOnObervableTest(), ObserveOnObservabeTest(), SubscribeFromTest())
-        for (task in tasks) {
-            task.execute()
-            System.out.println()
-        }
+    fun execute() {
+        val actions = arrayOf<Action0>(PlainObservableTest(), SubscribeOnObservableTest(), SubscribeAndObserveOnObervableTest(), ObserveOnObservabeTest(), SubscribeFromTest())
+       actions.forEach {
+           it.call()
+       }
     }
 
-    private abstract inner class LatchTask : ITask {
-        override fun execute() {
+    private abstract inner class LatchTask : Action0 {
+        override fun call() {
             try {
                 invokeExecution()
             } catch (e: InterruptedException) {
                 System.out.println("Test ${RxThread::class.simpleName} is error")
             }
-
         }
 
         abstract fun invokeExecution()
@@ -46,7 +37,7 @@ class RxThread : ITask {
             val latch = CountDownLatch(1)
 
             print("=== Plain Observable ==== on thread ", currentThread)
-            Observable.create(Observable.OnSubscribe<kotlin.Int> { subscriber ->
+            Observable.create(Observable.OnSubscribe<Int> { subscriber ->
                 print("OnSubscribe call on ", currentThread)
                 subscriber.onStart()
                 subscriber.onNext(1)
@@ -70,7 +61,7 @@ class RxThread : ITask {
             val latch = CountDownLatch(1)
 
             print("=== SubscribeOn Observable ==== on thread ", currentThread)
-            Observable.create(Observable.OnSubscribe<kotlin.Int> { subscriber ->
+            Observable.create(Observable.OnSubscribe<Int> { subscriber ->
                 print("OnSubscribe call on ", currentThread)
                 subscriber.onStart()
                 subscriber.onNext(1)
@@ -95,7 +86,7 @@ class RxThread : ITask {
             val latch = CountDownLatch(1)
 
             print("=== SubscribeOn Observable ==== on thread ", currentThread)
-            Observable.create(Observable.OnSubscribe<kotlin.Int> { subscriber ->
+            Observable.create(Observable.OnSubscribe<Int> { subscriber ->
                 print("OnSubscribe call on ", currentThread)
                 subscriber.onStart()
                 subscriber.onNext(1)
@@ -119,7 +110,7 @@ class RxThread : ITask {
             val latch = CountDownLatch(1)
 
             print("=== SubscribeOn ObservableOn ==== on thread ", currentThread)
-            Observable.create(Observable.OnSubscribe<kotlin.Int> { subscriber ->
+            Observable.create(Observable.OnSubscribe<Int> { subscriber ->
                 print("OnSubscribe call on ", currentThread)
                 subscriber.onStart()
                 subscriber.onNext(1)

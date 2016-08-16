@@ -2,6 +2,17 @@ package com.gandan.practice.reflection
 
 import java.lang.reflect.Modifier
 
+fun main(args: Array<String>) {
+    SampleClassReflection(String::class.java)
+            .apply {
+                displayClassnameAtRuntime()
+                dipslayModifier()
+                print("Generate Empty String with newInstance")
+                val emptyString = newInstance()
+                println(" " + ("" == emptyString))
+            }
+
+}
 
 class SampleClassReflection(internal var myClass: Class<*>) {
 
