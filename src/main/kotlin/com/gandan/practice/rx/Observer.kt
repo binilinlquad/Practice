@@ -38,7 +38,10 @@ fun main(args: Array<String>) {
         override fun onNext(t: String?) {
             t?.run { System.out.println(t) }
         }
-    }.apply { input.subscribe({ onNext(it) }, { onError(it) }, { onCompleted() }) }
+    }.apply { input.map { it.toInt() }.scan(0, {s, s_ -> s + s_}).subscribe({ onNext(it.toString()) }, { onError(it) }, { onCompleted() }) }
 
+    input.connect()
+    input.connect()
+    input.connect()
     input.connect()
 }
