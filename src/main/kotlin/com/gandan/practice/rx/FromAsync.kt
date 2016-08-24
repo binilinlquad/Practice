@@ -11,43 +11,26 @@ fun main(args: Array<String>) {
 
     val asyncIn = Observable.fromAsync<String>({ emitter: AsyncEmitter<String> ->
         emitter.run {
-            val innerSubscription = object : Subscription {
-                var flag = false
-                override fun isUnsubscribed(): Boolean {
-                    return flag
-                }
-
-                override fun unsubscribe() {
-                    System.`in`.close()
-                    flag = true
-                }
-            }
 
             // prepare onNext, onError, and onComplete before setting subscription to prevent too early unsubscribe
             System.`in`.apply {
                 try {
                     var counter = 0
                     do {
-                        if (!innerSubscription.isUnsubscribed && counter < requested()) {
-                            readLine()?.run {
-                                if (this != "exit") {
-                                    onNext(this)
-                                    counter++
-                                } else {
-                                    innerSubscription.unsubscribe()
-                                    onCompleted()
-                                    return@fromAsync
-                                }
-                            } ?: innerSubscription.unsubscribe()
-                        }
+                        readLine()?.run {
+                            if (this != "exit") {
+                                onNext(this)
+                                counter++
+                            } else {
+                                onCompleted()
+                                return@fromAsync
+                            }
+                        } ?: onCompleted()
                     } while (true)
                 } catch (e: Throwable) {
                     onError(e)
                 }
             }
-
-            // do not set subscription before onNext implementation
-            setSubscription(innerSubscription)
 
             setCancellation { System.`in`.close() }
 
