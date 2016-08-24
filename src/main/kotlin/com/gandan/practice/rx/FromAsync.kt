@@ -7,20 +7,22 @@ import rx.functions.Action1
 import java.io.BufferedInputStream
 
 fun main(args: Array<String>) {
-    val innerSubscription = object : Subscription {
-        var flag = false
-        override fun isUnsubscribed(): Boolean {
-            return flag
-        }
 
-        override fun unsubscribe() {
-            System.`in`.close()
-            flag = true
-        }
-    }
 
     val asyncIn = Observable.fromAsync<String>({ emitter: AsyncEmitter<String> ->
         emitter.run {
+            val innerSubscription = object : Subscription {
+                var flag = false
+                override fun isUnsubscribed(): Boolean {
+                    return flag
+                }
+
+                override fun unsubscribe() {
+                    System.`in`.close()
+                    flag = true
+                }
+            }
+
             // prepare onNext, onError, and onComplete before setting subscription to prevent too early unsubscribe
             System.`in`.apply {
                 try {
