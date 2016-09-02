@@ -32,6 +32,8 @@ fun main(args: Array<String>) {
             }
         }
     }
+            .doOnCompleted { System.out.println("Complete") }
+
     val f = Observable.just("f").repeatWhen {
         it.flatMap {
             if (!flagF) {
@@ -42,11 +44,12 @@ fun main(args: Array<String>) {
             }
         }
     }
+            .doOnCompleted { System.out.println("Complete") }
 
     e.concatWith(f).subscribe { System.out.print("$it ") }
     System.out.print(" It's wrong")
 
-    System.out.println("\nRepeat with flatmap 2")
+    System.out.println("\nRepeat with map and dematerialize")
     var flagG = false
     val g = Observable.just("g").repeatWhen { source ->
         source.map {
@@ -58,6 +61,7 @@ fun main(args: Array<String>) {
             }
         }.dematerialize<Unit>()
     }
+            .doOnCompleted { System.out.println("Complete") }
 
     var flagH = false
     val h = Observable.just("h").repeatWhen { source ->
@@ -70,6 +74,7 @@ fun main(args: Array<String>) {
             }
         }.dematerialize<Unit>()
     }
+            .doOnCompleted { System.out.println("Complete") }
 
     g.concatWith(h).subscribe { System.out.print("$it ") }
     System.out.print(" It's correct")
