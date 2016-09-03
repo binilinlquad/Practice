@@ -65,7 +65,7 @@ fun main(args: Array<String>) {
 
     var flagH = false
     val h = Observable.just("h").repeatWhen { source ->
-        source.map() {
+        source.map {
             if (!flagH) {
                 flagH = true
                 Notification.createOnNext(Unit)
