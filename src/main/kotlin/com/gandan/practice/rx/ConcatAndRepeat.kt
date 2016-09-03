@@ -78,4 +78,17 @@ fun main(args: Array<String>) {
 
     g.concatWith(h).subscribe { System.out.print("$it ") }
     System.out.print(" It's correct")
+
+    // ask andri
+    var ka = 0
+    var bulenA = true
+    val aa = Observable.defer { Observable.just("A ${ka++}") }
+            .repeatWhen { it.takeWhile { bulenA.apply { bulenA = false } } }
+
+    var kb = 0
+    var bulenB = true
+    val bb = Observable.defer { Observable.just("B ${kb++}") }
+            .repeatWhen { it.takeWhile { bulenB.apply { bulenB = false } } }
+
+    aa.concatWith(bb).subscribe { System.err.println("WPF ${it}") }
 }
