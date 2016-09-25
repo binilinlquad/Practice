@@ -9,7 +9,7 @@ import java.io.BufferedInputStream
 fun main(args: Array<String>) {
 
 
-    val asyncIn = Observable.fromAsync<String>({ emitter: AsyncEmitter<String> ->
+    val asyncIn = Observable.fromEmitter<String>({ emitter: AsyncEmitter<String> ->
         emitter.run {
 
             // prepare onNext, onError, and onComplete before setting subscription to prevent too early unsubscribe
@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
                                 counter++
                             } else {
                                 onCompleted()
-                                return@fromAsync
+                                return@fromEmitter
                             }
                         } ?: onCompleted()
                     } while (true)
