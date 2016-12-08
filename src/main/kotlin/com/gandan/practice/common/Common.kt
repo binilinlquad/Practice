@@ -1,5 +1,6 @@
 package com.gandan.practice.common
 
+import io.reactivex.Flowable
 import rx.Notification
 import rx.Observable
 
