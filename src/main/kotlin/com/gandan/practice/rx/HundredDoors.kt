@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
                 Observable.range(e, 100 - e + 1)
                         .filter { it % e == 0 }
             }
-            .reduce(Array<Boolean>(100, { p -> false }), { a, b -> a[b - 1] = !a[b - 1]; a })
+            .reduce(Array<Boolean>(100, { _ -> false }), { a, b -> a[b - 1] = !a[b - 1]; a })
             .map { it.mapIndexed { i, b -> if (b) i + 1 else -1 } }
             .flatMapIterable { it.asIterable() }
             .filter { it > 0 }

@@ -51,7 +51,8 @@ fun main(args: Array<String>) {
                 System.out.println(it)
             })
 
-    val observable = Observable.just("A1", "B2", "C3", "D4")
+    val observable = Observable.range(1, 200000000)
+            .doOnNext { System.out.println(it) }
             .compose(MapIndexed())
     observable
             .subscribeOn(Schedulers.newThread())
@@ -67,7 +68,8 @@ fun main(args: Array<String>) {
                 System.out.println(it)
             })
 
-    val rangeIndexed = Observable.range(1, 10 )
+    val rangeIndexed = Observable.range(1, 200000000 )
+            .doOnNext { System.out.println(it) }
             .compose(MapIndexedZ())
     rangeIndexed
             .subscribeOn(Schedulers.newThread())
@@ -83,6 +85,6 @@ fun main(args: Array<String>) {
                 System.out.println(it)
             })
 
-    Thread.sleep(5000)
+    Thread.sleep(10000)
 
 }

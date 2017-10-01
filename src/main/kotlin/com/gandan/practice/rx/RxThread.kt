@@ -14,9 +14,9 @@ class RxThread {
 
     fun execute() {
         val actions = arrayOf<Action0>(PlainObservableTest(), SubscribeOnObservableTest(), SubscribeAndObserveOnObervableTest(), ObserveOnObservabeTest(), SubscribeFromTest())
-       actions.forEach {
-           it.call()
-       }
+        actions.forEach {
+            it.call()
+        }
     }
 
     private abstract inner class LatchTask : Action0 {
@@ -42,8 +42,8 @@ class RxThread {
                 subscriber.onStart()
                 subscriber.onNext(1)
                 subscriber.onCompleted()
-            }).subscribe({ value -> print("onNext  On ", currentThread) },
-                    { error -> print("onError on ", currentThread) }
+            }).subscribe({ value -> print("onNext $value On ", currentThread) },
+                    { error -> print("onError $error on ", currentThread) }
             ) {
                 print("Complete on ", currentThread)
                 latch.countDown()
@@ -66,8 +66,8 @@ class RxThread {
                 subscriber.onStart()
                 subscriber.onNext(1)
                 subscriber.onCompleted()
-            }).subscribeOn(Schedulers.newThread()).subscribe({ value -> print("onNext  On ", currentThread) },
-                    { error -> print("onError on ", currentThread) }
+            }).subscribeOn(Schedulers.newThread()).subscribe({ value -> print("onNext $value On ", currentThread) },
+                    { error -> print("onError $error on ", currentThread) }
             ) {
                 print("Complete on ", currentThread)
                 latch.countDown()
@@ -91,8 +91,8 @@ class RxThread {
                 subscriber.onStart()
                 subscriber.onNext(1)
                 subscriber.onCompleted()
-            }).observeOn(Schedulers.newThread()).subscribe({ value -> print("onNext  On ", currentThread) },
-                    { error -> print("onError on ", currentThread) }
+            }).observeOn(Schedulers.newThread()).subscribe({ value -> print("onNext $value On ", currentThread) },
+                    { error -> print("onError $error on ", currentThread) }
             ) {
                 print("Complete on ", currentThread)
                 latch.countDown()
@@ -115,12 +115,14 @@ class RxThread {
                 subscriber.onStart()
                 subscriber.onNext(1)
                 subscriber.onCompleted()
-            }).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.newThread()).subscribe({ value -> print("onNext  On ", currentThread) },
-                    { error -> print("onError on ", currentThread) }
-            ) {
-                print("Complete on ", currentThread)
-                latch.countDown()
-            }
+            }).subscribeOn(Schedulers.newThread())
+                    .observeOn(Schedulers.newThread())
+                    .subscribe({ value -> print("onNext $value On ", currentThread) },
+                            { error -> print("onError $error on ", currentThread) }
+                    ) {
+                        print("Complete on ", currentThread)
+                        latch.countDown()
+                    }
 
             print("=== Finish Test === on thread ", currentThread)
 
@@ -140,8 +142,8 @@ class RxThread {
             })
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(Schedulers.newThread())
-                    .subscribe({ value -> print("onNext  On ", currentThread) },
-                            { error -> print("onError on ", currentThread) },
+                    .subscribe({ value -> print("onNext $value On ", currentThread) },
+                            { error -> print("onError $error on ", currentThread) },
                             {
                                 print("Complete on ", currentThread)
                                 latch.countDown()

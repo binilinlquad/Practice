@@ -33,8 +33,8 @@ fun main(args: Array<String>) {
             .repeatWhen {
                 val signal = it.share()
                 merge(
-                        signal.zipWith(range(1, 3), { a, b -> Unit }).doOnNext { autoTriggerKounter++ },
-                        signal.zipWith(onClicks, { a, b -> Unit }).doOnNext { manualTriggerKounter++ }
+                        signal.zipWith(range(1, 3), { _, _ -> Unit }).doOnNext { autoTriggerKounter++ },
+                        signal.zipWith(onClicks, { _, _ -> Unit }).doOnNext { manualTriggerKounter++ }
                 )
             }
             .publish()

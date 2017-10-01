@@ -14,6 +14,7 @@ class TryCatchFinally {
         println("Return in Catch-Finally result in " + returnInCatchAndFinally())
     }
 
+    @Suppress("UNREACHABLE_CODE")
     private fun returnInTryAndFinally(): String {
         try {
             return "Try clause"
@@ -22,6 +23,7 @@ class TryCatchFinally {
         }
     }
 
+    @Suppress("UNREACHABLE_CODE")
     private fun returnInCatchAndFinally(): String {
         try {
             throw RuntimeException("simulate exception")
