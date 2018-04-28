@@ -50,11 +50,7 @@ class TestSemaphore {
 }
 
 class BlockingSemaphore {
-    internal var sem: Semaphore
-
-    init {
-        sem = Semaphore(0)
-    }
+    private var sem: Semaphore = Semaphore(0)
 
     fun lock() {
         sem.acquireUninterruptibly()
