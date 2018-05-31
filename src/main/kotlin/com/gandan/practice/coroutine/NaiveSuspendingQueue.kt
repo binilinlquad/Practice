@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
         // interestingly, even though we use same Coroutine Context
         // but suspend coroutine (look NaiveSuspendingQueue implementation)
         // not blocking other coroutine (async)
-        val printer = async {
+        val printer = async(coroutineContext) {
             delay(1000)
             while (true) {
                 // it will block async coroutine when queue empty
