@@ -10,6 +10,7 @@ import kotlin.coroutines.experimental.suspendCoroutine
 
 fun main(args: Array<String>) {
     runBlocking {
+        log("Start blocking coroutine")
         val queue = NaiveSuspendingQueue<Int>(2)
         // use async to let take method keep working
         // because add/take method is blocking when queue is full/empty
@@ -21,7 +22,7 @@ fun main(args: Array<String>) {
             while (true) {
                 // it will block async coroutine when queue empty
                 val num = queue.take()
-                System.out.println("Number in queue $num")
+                log("Number is $num")
                 delay(100)
             }
         }
@@ -41,8 +42,12 @@ fun main(args: Array<String>) {
         }
 
         delay(5000)
+
+        printer.cancel()
     }
 }
+
+fun log(msg: String) = println("[${Thread.currentThread().name}] $msg")
 
 /**
  * Copy from http://blog.pronghorn.tech/optimizing-suspending-functions-in-kotlin/
@@ -65,7 +70,7 @@ class NaiveSuspendingQueue<T>(capacity: Int) : SuspendingQueue<T> {
         if (emptyWaiter != null) {
             this.emptyWaiter = null
 
-            System.out.println("""There was TAKE request when queue is EMPTY""")
+            log("""There was TAKE request when queue is EMPTY""")
 
             // continue suspended emptyWaiter, which is in take method
             // value will be returned to suspendResult in that method
@@ -73,9 +78,9 @@ class NaiveSuspendingQueue<T>(capacity: Int) : SuspendingQueue<T> {
         }
         else {
             while (!underlying.offer(value)) {
-                System.out.println("Queue is full in ADD $value, Will SUSPEND")
+                log("Queue is full in ADD $value, Will SUSPEND")
                 suspendCoroutine<T> { continuation -> fullWaiter = continuation }
-                System.out.println("Queue is not full now, try to ADD again $value")
+                log("Queue is not full now, try to ADD again $value")
             }
         }
         return true
@@ -87,20 +92,20 @@ class NaiveSuspendingQueue<T>(capacity: Int) : SuspendingQueue<T> {
             val fullWaiter = this.fullWaiter
             if (fullWaiter != null) {
                 this.fullWaiter = null
-                System.out.println("""There was ADD request when queue was FULL before.""")
+                log("""There was ADD request when queue was FULL before.""")
 
                 // continue suspended fullWaiter, which is in add method
                 // value won't be used in that method, but it will continue looping which is block before
                 fullWaiter.resume(result)
             }
 
-            System.out.println("Return poll result $result")
+            log("Return poll result $result")
             return result
         }
         else {
             val suspendResult = suspendCoroutine<T> { continuation -> emptyWaiter = continuation }
 
-            System.out.println("Continuation of TAKE after queue NOT EMPTY now with result $suspendResult")
+            log("Continuation of TAKE after queue NOT EMPTY now with result $suspendResult")
             return suspendResult
         }
     }
