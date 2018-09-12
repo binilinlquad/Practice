@@ -25,7 +25,6 @@ class DebounceTest {
         val fakeUserInput = PublishSubject.create<InputCase>()
         val observeInput : Observable<InputCase> = fakeUserInput
                 .debounce(200, TimeUnit.MILLISECONDS)
-                .log()
                 .switchMap {
                     if (it.shouldError) {
                     Observable.just(1)
@@ -69,13 +68,20 @@ class DebounceTest {
                 .switchMap {
                     if (it.shouldError) {
                         // this is where it is different
-                        Observable.just(InputCase("error replacement", false))
+                        Observable.just(1)
                                 .delay(50, TimeUnit.MILLISECONDS)
+                                .flatMap { Observable.error<InputCase>(RuntimeException("Faking error")) }
                     } else {
                         Observable.just(it)
                                 .delay(50, TimeUnit.MILLISECONDS)
                     }
+                    .onErrorResumeNext { _: Throwable  ->
+                        // this is where it is different
+                        Observable.just(InputCase("error replacement", false))
+                    }
                 }
+
+
                 .log()
 
         observeInput
