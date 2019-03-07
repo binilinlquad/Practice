@@ -1,14 +1,15 @@
 package com.gandan.practice.coroutine
 
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import java.util.concurrent.ArrayBlockingQueue
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-fun main(args: Array<String>) {
+fun main() {
     runBlocking {
         log("Start blocking coroutine")
         val queue = NaiveSuspendingQueue<Int>(2)
@@ -45,6 +46,7 @@ fun main(args: Array<String>) {
 
         printer.cancel()
     }
+
 }
 
 fun log(msg: String) = println("[${Thread.currentThread().name}] $msg")

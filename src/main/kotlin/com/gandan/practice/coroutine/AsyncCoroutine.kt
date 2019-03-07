@@ -1,9 +1,10 @@
 package com.gandan.practice.coroutine
 
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
-fun main(args: Array<String>) {
+
+fun main() {
     runBlocking {
         val longOperation = async {
             Thread.sleep(1000)

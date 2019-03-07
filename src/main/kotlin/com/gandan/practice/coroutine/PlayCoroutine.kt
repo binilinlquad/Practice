@@ -1,14 +1,10 @@
 package com.gandan.practice.coroutine
 
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.produce
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
-import java.util.concurrent.TimeUnit
-import kotlin.coroutines.experimental.buildSequence
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
 
-fun main(args: Array<String>) {
+fun main() {
     // take first ten fibonacci
     println("Generate fibonacci sequence")
     fibonacci().take(10).forEach { println(it) }
@@ -17,7 +13,7 @@ fun main(args: Array<String>) {
 
     // get fibonacci number through channel
     val fibProducer = fibonacciProducer()
-    launch {
+    GlobalScope.launch {
         // it will generate infinite number
         //  fibProducer.consumeEach { println(it) }
 
@@ -38,7 +34,7 @@ fun main(args: Array<String>) {
 }
 
 suspend fun takeANap() {
-    delay(5, TimeUnit.SECONDS)
+    delay(5)
     println("Wake Up")
 }
 
@@ -47,7 +43,7 @@ suspend fun takeANap() {
  * sequence will generate lazy sequence which could be accessed through iterator
  *
  */
-fun fibonacci() = buildSequence {
+fun fibonacci() = sequence {
     var (a, b) = 0 to 1
     while (true) {
         yield(a)
@@ -62,7 +58,7 @@ fun fibonacci() = buildSequence {
  * Producer will result ReceiveChannel. Actor will result SendChannel
  *
  */
-fun fibonacciProducer() : ReceiveChannel<Int> = produce {
+fun fibonacciProducer() : ReceiveChannel<Int> = GlobalScope.produce   {
     var (a, b) = 0 to 1
     while (true) {
         send(a)

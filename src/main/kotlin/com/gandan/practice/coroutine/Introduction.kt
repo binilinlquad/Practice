@@ -1,9 +1,9 @@
 package com.gandan.practice.coroutine
 
-import kotlinx.coroutines.experimental.*
-import kotlin.coroutines.experimental.buildSequence
+import kotlinx.coroutines.*
 
-fun main(args: Array<String>) {
+
+fun main() {
     sampleLaunchInCommonPool()
 
     // block run in same thread with current
@@ -41,7 +41,7 @@ private fun sampleJointAndAwait(assync: Deferred<Int>) {
 }
 
 private fun sampleAsynCommonPool(): Deferred<Int> {
-    val assync: Deferred<Int> = async(CommonPool) {
+    val assync: Deferred<Int> = GlobalScope.async {
         val threadId = Thread.currentThread().id
         System.out.println("1 with async in $threadId")
         Thread.sleep(5000)
@@ -52,7 +52,7 @@ private fun sampleAsynCommonPool(): Deferred<Int> {
 }
 
 private fun sampleBuildSequence(): Sequence<Int> {
-    val fibonacci = buildSequence<Int> {
+    val fibonacci = sequence<Int> {
         System.out.println("Sequence in ${Thread.currentThread().id}")
         yield(1) // first Fibonacci number
         var cur = 1
@@ -78,7 +78,7 @@ private fun sampleBlocking() {
 
 private fun sampleLaunchInCommonPool() {
     // block will run in different green thread
-    val coroutine = launch(CommonPool) {
+    val coroutine = GlobalScope.launch {
         val threadId = Thread.currentThread().id
         System.out.println("1 with launch in $threadId")
         Thread.sleep(5000)
@@ -89,7 +89,7 @@ private fun sampleLaunchInCommonPool() {
 
 // inherit parent coroutine scope
 fun sampleInherintParentContext() {
-    val pretendCalculationAsync = async(CommonPool) {
+    val pretendCalculationAsync = GlobalScope.async {
         // suspend this coroutine, it will let caller continue
         Thread.sleep(1000)
 
