@@ -3,7 +3,5 @@
 .idea/**/*
 .idea/copyright/profiles_settings.xml
 .idea/uiDesigner.xml
-.gradle/2.9/
-.gradle/3.0/
-.gradle/3.3/
+.gradle/**
 out/
