@@ -1,8 +1,6 @@
 package com.gandan.practice.coroutine
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 
 fun main() {
@@ -29,5 +27,18 @@ fun main() {
         val secondCall = longOperation.await()
         val end2 = System.currentTimeMillis()
         System.out.println("Second time invocation long operation cotourine return ${secondCall} in ${end2 - start2}ms")
+    }
+
+    // what if coroutine access var from outside its own blcok
+    runBlocking {
+        var value = 10
+        println("Var initial value is $value")
+        val printer = GlobalScope.async {
+            delay(1000)
+            println("Var value inside coroutine is $value")
+        }
+        value = 99
+        println("Mutate var value to $value")
+        printer.join()
     }
 }
