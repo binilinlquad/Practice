@@ -39,6 +39,6 @@ fun main() {
         }
         value = 99
         println("Mutate var value to $value")
-        printer.join()
+        printer.await()
     }
 }
